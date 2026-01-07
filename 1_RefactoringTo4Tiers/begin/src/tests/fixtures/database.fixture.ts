@@ -51,4 +51,22 @@ export class DatabaseFixture {
             where: { studentId, classId }
         });
     }
+
+    async addAssignment(classId: string, title: string) {
+        return await this.prisma.assignment.create({
+            data: { classId, title }
+        });
+    }
+
+    async addStudentAssignment(studentId: string, assignmentId: string, status: string = 'NOT_STARTED', grade?: string) {
+        return await this.prisma.studentAssignment.create({
+            data: { studentId, assignmentId, status, grade }
+        });
+    }
+
+    async getStudentAssignment(studentId: string, assignmentId: string) {
+        return await this.prisma.studentAssignment.findFirst({
+            where: { studentId, assignmentId }
+        });
+    }
 }
