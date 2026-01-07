@@ -4,7 +4,7 @@
   "description": "A basic typescript app starter for 2023.",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf ./build && tsc",
+    "build": "rimraf ./build && tsc -p tsconfig.build.json",
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
@@ -20,8 +20,8 @@
     "prettier-watch:win32": "onchange \"src/**/*.ts\" -- prettier --write {{changed}}",
     "prettier-watch:darwin:linux": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
     "prettier-watch:default": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
-    "test": "dotenv-cli -e .env.test jest",
-    "test:dev": "dotenv-cli -e .env.test jest --watchAll",
+    "test": "dotenv -e .env.test -- jest --runInBand",
+    "test:dev": "dotenv -e .env.test -- jest --watchAll --runInBand",
     "test:db:setup": "dotenv -e .env.test -- prisma db push"
   },
   "husky": {
