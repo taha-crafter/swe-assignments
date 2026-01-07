@@ -33,4 +33,22 @@ export class DatabaseFixture {
             data: { name }
         });
     }
+
+    async addClass(name: string) {
+        return await this.prisma.class.create({
+            data: { name }
+        });
+    }
+
+    async enrollStudent(studentId: string, classId: string) {
+        return await this.prisma.classEnrollment.create({
+            data: { studentId, classId }
+        });
+    }
+
+    async getEnrollment(studentId: string, classId: string) {
+        return await this.prisma.classEnrollment.findFirst({
+            where: { studentId, classId }
+        });
+    }
 }
