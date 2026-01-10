@@ -59,7 +59,7 @@ function errorHandler(
     }
 
     if (error instanceof AssignmentNotFoundException) {
-        return res.status(400).json({
+        return res.status(404).json({
             error: ErrorExceptionType.AssignmentNotFound,
             data: undefined,
             success: false,
@@ -68,7 +68,7 @@ function errorHandler(
     }
 
     if (error instanceof StudentAssignmentNotFoundException) {
-        return res.status(400).json({
+        return res.status(404).json({
             error: ErrorExceptionType.StudentAssignmentNotFoundException,
             data: undefined,
             success: false,
