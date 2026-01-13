@@ -16,4 +16,9 @@ export class ClassService {
         }
         return cls;
     }
+
+    async getAssignmentsByClassId(id: string) {
+        await this.getClassById(id);
+        return await this.classRepository.findAssignments(id);
+    }
 }

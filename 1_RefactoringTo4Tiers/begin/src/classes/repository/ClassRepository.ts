@@ -18,4 +18,16 @@ export class ClassRepository {
             }
         });
     }
+
+    async findAssignments(classId: string) {
+        return await this.prisma.assignment.findMany({
+            where: {
+                classId
+            },
+            include: {
+                class: true,
+                studentTasks: true
+            }
+        });
+    }
 }
