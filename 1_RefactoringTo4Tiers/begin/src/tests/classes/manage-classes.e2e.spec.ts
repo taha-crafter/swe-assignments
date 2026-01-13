@@ -6,6 +6,10 @@ import { DatabaseFixture } from '@/tests/fixtures/database.fixture';
 
 const feature = loadFeature('src/tests/classes/manage-classes.feature');
 
+interface AssignmentResponse {
+    title: string;
+}
+
 defineFeature(feature, (test) => {
     const db = new DatabaseFixture();
     let classId: string;
@@ -66,7 +70,7 @@ defineFeature(feature, (test) => {
         });
 
         and(/^the assignments should include "(.*)" and "(.*)"$/, (title1: string, title2: string) => {
-            const titles = response.body.data.map((a: any) => a.title);
+            const titles = response.body.data.map((a: AssignmentResponse) => a.title);
             expect(titles).toContain(title1);
             expect(titles).toContain(title2);
         });

@@ -6,6 +6,19 @@ import { DatabaseFixture } from '@/tests/fixtures/database.fixture';
 
 const feature = loadFeature('src/tests/students/get-student-report-card/get-student-report-card.feature');
 
+interface AssignmentRow {
+    Title: string;
+    Status: string;
+    Grade: string | 'null';
+}
+
+interface StudentAssignmentResponse {
+    assignment: {
+        title: string;
+    };
+    grade?: string | null;
+}
+
 defineFeature(feature, (test) => {
     const db = new DatabaseFixture();
     let studentId: string;
@@ -19,7 +32,7 @@ defineFeature(feature, (test) => {
         await db.disconnect();
     });
 
-    const seedAssignments = async (table: any[]) => {
+    const seedAssignments = async (table: AssignmentRow[]) => {
         const cls = await db.addClass("General Class");
         for (const row of table) {
             const assignment = await db.addAssignment(cls.id, row.Title);
@@ -34,7 +47,7 @@ defineFeature(feature, (test) => {
             studentId = student.id;
         });
 
-        and('the student has the following assignments:', async (table: any[]) => {
+        and('the student has the following assignments:', async (table: AssignmentRow[]) => {
             await seedAssignments(table);
         });
 
@@ -48,13 +61,13 @@ defineFeature(feature, (test) => {
         });
 
         and(/^the assignments should be "(.*)" and "(.*)"$/, (title1: string, title2: string) => {
-            const titles = response.body.data.map((sa: any) => sa.assignment.title);
+            const titles = response.body.data.map((sa: StudentAssignmentResponse) => sa.assignment.title);
             expect(titles).toContain(title1);
             expect(titles).toContain(title2);
         });
 
         and(/^"(.*)" should NOT be in the list$/, (title: string) => {
-            const titles = response.body.data.map((sa: any) => sa.assignment.title);
+            const titles = response.body.data.map((sa: StudentAssignmentResponse) => sa.assignment.title);
             expect(titles).not.toContain(title);
         });
     });
@@ -65,7 +78,7 @@ defineFeature(feature, (test) => {
             studentId = student.id;
         });
 
-        and('the student has the following assignments:', async (table: any[]) => {
+        and('the student has the following assignments:', async (table: AssignmentRow[]) => {
             await seedAssignments(table);
         });
 
@@ -79,13 +92,13 @@ defineFeature(feature, (test) => {
         });
 
         and(/^the grades should be "(.*)" and "(.*)"$/, (grade1: string, grade2: string) => {
-            const grades = response.body.data.map((sa: any) => sa.grade);
+            const grades = response.body.data.map((sa: StudentAssignmentResponse) => sa.grade);
             expect(grades).toContain(grade1);
             expect(grades).toContain(grade2);
         });
 
         and(/^the "(.*)" should NOT be in the report card$/, (title: string) => {
-            const titles = response.body.data.map((sa: any) => sa.assignment.title);
+            const titles = response.body.data.map((sa: StudentAssignmentResponse) => sa.assignment.title);
             expect(titles).not.toContain(title);
         });
     });

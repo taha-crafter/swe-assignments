@@ -5,6 +5,16 @@ import { DatabaseFixture } from '@/tests/fixtures/database.fixture';
 
 const feature = loadFeature('src/tests/students/get-students/get-students.feature');
 
+interface StudentRow {
+    name: string;
+}
+
+interface StudentDetail {
+    classes: unknown[];
+    assignments: unknown[];
+    reportCards: unknown[];
+}
+
 defineFeature(feature, (test) => {
     const db = new DatabaseFixture();
 
@@ -19,7 +29,7 @@ defineFeature(feature, (test) => {
     test('Retrieve all students successfully in alphabetical order', ({ given, when, then, and }) => {
         let response: supertest.Response;
 
-        given('the following students exist in the system:', async (table) => {
+        given('the following students exist in the system:', async (table: StudentRow[]) => {
             for (const row of table) {
                 await db.addStudent(row.name);
             }
@@ -40,10 +50,10 @@ defineFeature(feature, (test) => {
         });
 
         and('each student should include their full profile information', () => {
-            response.body.data.forEach((student: any) => {
-                expect(student).toHaveProperty('classes');
-                expect(student).toHaveProperty('assignments');
-                expect(student).toHaveProperty('reportCards');
+            response.body.data.forEach((student: StudentDetail) => {
+                expect(Array.isArray(student.classes)).toBe(true);
+                expect(Array.isArray(student.assignments)).toBe(true);
+                expect(Array.isArray(student.reportCards)).toBe(true);
             });
         });
     });

@@ -6,6 +6,12 @@ import { Errors } from '@/shared/constants';
 
 const feature = loadFeature('src/tests/students/get-student-by-id/get-student-by-id.feature');
 
+interface StudentDetail {
+    classes: unknown[];
+    assignments: unknown[];
+    reportCards: unknown[];
+}
+
 defineFeature(feature, (test) => {
     const db = new DatabaseFixture();
     let studentId: string;
@@ -37,9 +43,10 @@ defineFeature(feature, (test) => {
         });
 
         and('the response should include the full profile information', () => {
-            expect(response.body.data).toHaveProperty('classes');
-            expect(response.body.data).toHaveProperty('assignments');
-            expect(response.body.data).toHaveProperty('reportCards');
+            const student = response.body.data as StudentDetail;
+            expect(Array.isArray(student.classes)).toBe(true);
+            expect(Array.isArray(student.assignments)).toBe(true);
+            expect(Array.isArray(student.reportCards)).toBe(true);
         });
     });
 
@@ -48,7 +55,6 @@ defineFeature(feature, (test) => {
 
         given(/^no student exists with the ID "(.*)"$/, async (id: string) => {
             requestedId = id;
-            // No action needed as DB is reset, but this documents the intent
         });
 
         when('I request a student with that ID', async () => {
