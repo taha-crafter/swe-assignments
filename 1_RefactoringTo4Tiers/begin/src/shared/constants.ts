@@ -1,5 +1,4 @@
-
-const ErrorExceptionType = {
+export const Errors = {
     ValidationError: "ValidationError",
     StudentNotFound: "StudentNotFound",
     ClassNotFound: "ClassNotFound",
@@ -7,7 +6,5 @@ const ErrorExceptionType = {
     ServerError: "ServerError",
     ClientError: "ClientError",
     StudentAlreadyEnrolled: "StudentAlreadyEnrolled",
-    StudentAssignmentNotFoundException: "StudentAssignmentNotFoundException",
+    StudentAssignmentNotFoundException: "AssignmentNotFound"
 };
-
-export default ErrorExceptionType;

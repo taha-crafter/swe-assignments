@@ -1,8 +1,8 @@
 import { defineFeature, loadFeature } from 'jest-cucumber';
 import supertest from 'supertest';
-import { app } from '@/index';
+import { app } from '@/app';
 import { DatabaseFixture } from '@/tests/fixtures/database.fixture'
-import { Errors } from '@/index';
+import { Errors } from '@/shared/constants';
 
 const feature = loadFeature('src/tests/students/create-student/create-student.feature');
 

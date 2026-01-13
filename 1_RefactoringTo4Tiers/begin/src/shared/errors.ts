@@ -8,7 +8,7 @@ import {
     StudentAssignmentNotFoundException,
     StudentNotFoundException,
 } from "./exceptions";
-import ErrorExceptionType from "./constants";
+import { Errors } from "./constants";
 
 type ErrorHandler = (
     error: Error,
@@ -25,7 +25,7 @@ function errorHandler(
 ) {
     if (error instanceof InvalidRequestBodyException) {
         return res.status(400).json({
-            error: ErrorExceptionType.ValidationError,
+            error: Errors.ValidationError,
             data: undefined,
             success: false,
             message: error.message,
@@ -34,7 +34,7 @@ function errorHandler(
 
     if (error instanceof StudentNotFoundException) {
         return res.status(404).json({
-            error: ErrorExceptionType.StudentNotFound,
+            error: Errors.StudentNotFound,
             data: undefined,
             success: false,
             message: error.message,
@@ -43,7 +43,7 @@ function errorHandler(
 
     if (error instanceof ClassNotFoundException) {
         return res.status(404).json({
-            error: ErrorExceptionType.ClassNotFound,
+            error: Errors.ClassNotFound,
             data: undefined,
             success: false,
         });
@@ -51,7 +51,7 @@ function errorHandler(
 
     if (error instanceof StudentAlreadyEnrolledException) {
         return res.status(400).json({
-            error: ErrorExceptionType.StudentAlreadyEnrolled,
+            error: Errors.StudentAlreadyEnrolled,
             data: undefined,
             success: false,
             message: error.message,
@@ -60,7 +60,7 @@ function errorHandler(
 
     if (error instanceof AssignmentNotFoundException) {
         return res.status(404).json({
-            error: ErrorExceptionType.AssignmentNotFound,
+            error: Errors.AssignmentNotFound,
             data: undefined,
             success: false,
             message: error.message,
@@ -69,7 +69,7 @@ function errorHandler(
 
     if (error instanceof StudentAssignmentNotFoundException) {
         return res.status(404).json({
-            error: ErrorExceptionType.StudentAssignmentNotFoundException,
+            error: Errors.StudentAssignmentNotFoundException,
             data: undefined,
             success: false,
             message: error.message,
@@ -77,7 +77,7 @@ function errorHandler(
     }
 
     return res.status(500).json({
-        error: ErrorExceptionType.ServerError,
+        error: Errors.ServerError,
         data: undefined,
         success: false,
         message: error.message,

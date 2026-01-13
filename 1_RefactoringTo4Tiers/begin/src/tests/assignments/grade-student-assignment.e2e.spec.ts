@@ -1,6 +1,7 @@
 import { defineFeature, loadFeature } from 'jest-cucumber';
 import supertest from 'supertest';
-import { app, Errors } from '@/index';
+import { app } from '@/app';
+import { Errors } from '@/shared/constants';
 import { DatabaseFixture } from '@/tests/fixtures/database.fixture';
 
 const feature = loadFeature('src/tests/assignments/grade-student-assignment.feature');
@@ -31,7 +32,6 @@ defineFeature(feature, (test) => {
             const assignment = await db.addAssignment(cls.id, title);
             assignmentId = assignment.id;
 
-            // Seed directly as 'submitted' using our updated DSL
             const sa = await db.addStudentAssignment(studentId, assignmentId, 'submitted');
             studentAssignmentId = sa.id;
         });
@@ -75,7 +75,7 @@ defineFeature(feature, (test) => {
         when('I try to grade the assignment without providing a grade', async () => {
             response = await supertest(app)
                 .post('/student-assignments/grade')
-                .send({ id: studentAssignmentId }); // Missing 'grade' key
+                .send({ id: studentAssignmentId });
         });
 
         then('I should receive a validation error', () => {

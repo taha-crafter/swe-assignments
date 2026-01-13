@@ -1,6 +1,7 @@
 import { defineFeature, loadFeature } from 'jest-cucumber';
 import supertest from 'supertest';
-import { app, Errors } from '@/index';
+import { app } from '@/app';
+import { Errors } from '@/shared/constants';
 import { DatabaseFixture } from '@/tests/fixtures/database.fixture';
 
 const feature = loadFeature('src/tests/assignments/submit-student-assignment.feature');
@@ -40,7 +41,6 @@ defineFeature(feature, (test) => {
             const assignment = await db.addAssignment(classId, title);
             assignmentId = assignment.id;
 
-            // Create the initial "Assigned" record (status NOT_STARTED)
             const sa = await db.addStudentAssignment(studentId, assignmentId);
             studentAssignmentId = sa.id;
         });
